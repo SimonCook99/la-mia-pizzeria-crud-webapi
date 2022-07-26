@@ -8,16 +8,29 @@
     axios.get("api/Pizzas")
         .then(function(response){
             console.log(response.data);
+            
+            //scorro tra tutte le pizze, e le stampo in base alla presenza della categoria
             response.data.forEach(function(pizza) {
-                console.log(pizza.nome);
-                document.getElementById("container").innerHTML += 
-                    `<div class="card">
-                        <h2>${pizza.nome}</h2>
-                        <p>${pizza.descrizione}</p>
-                        <img src="${pizza.immagine}" alt="${pizza.nome}"
-                        <h4>${pizza.prezzo}€</h4>
-                        <p>${pizza.category}</p>
-                    </div>`;  
+
+                if(pizza.category != null){
+
+                    document.getElementById("container").innerHTML += 
+                        `<div class="card">
+                            <h2>${pizza.nome}</h2>
+                            <p>${pizza.descrizione}</p>
+                            <img src="${pizza.immagine}" alt="${pizza.nome}"
+                            <h4>${pizza.prezzo}€</h4>
+                            <p style="color:red;" >${pizza.category.nome}</p>
+                        </div>`;
+                }else{
+                    document.getElementById("container").innerHTML += 
+                        `<div class="card">
+                            <h2>${pizza.nome}</h2>
+                            <p>${pizza.descrizione}</p>
+                            <img src="${pizza.immagine}" alt="${pizza.nome}"
+                            <h4>${pizza.prezzo}€</h4>
+                        </div>`;
+                }
             })
         })
 </script>
