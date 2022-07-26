@@ -1,4 +1,14 @@
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using la_mia_pizzeria_static.Data;
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("PizzaContextConnection") ?? throw new InvalidOperationException("Connection string 'PizzaContextConnection' not found.");
+
+builder.Services.AddDbContext<PizzaContext>(options =>
+    options.UseSqlServer(connectionString));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<PizzaContext>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -18,10 +28,16 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication(); //rigo aggiunto per la gestione di login
+
+
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+
+app.MapRazorPages(); //rigo aggiunto per la gestione di login
 
 app.Run();

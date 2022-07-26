@@ -1,6 +1,7 @@
 ﻿using la_mia_pizzeria_static.Data;
 using la_mia_pizzeria_static.Models;
 using la_mia_pizzeria_static.Models.Partial;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,6 +26,7 @@ namespace la_mia_pizzeria_static.Controllers
             }
         }
 
+        [Authorize]
         [HttpGet]
         public IActionResult Create(){
 
@@ -101,6 +103,7 @@ namespace la_mia_pizzeria_static.Controllers
 
 
         [HttpGet]
+        [Authorize]
         public IActionResult Update(int id){
 
             using (PizzaContext context = new PizzaContext()){
@@ -167,6 +170,7 @@ namespace la_mia_pizzeria_static.Controllers
 
 
         [HttpPost]
+        [Authorize]
         [ValidateAntiForgeryToken]
         public IActionResult Delete(int id){
             using (PizzaContext context = new PizzaContext())
