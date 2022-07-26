@@ -1,5 +1,23 @@
 ﻿<h1>Chiamata API delle pizze</h1>
 
+<div id="container">
+
+</div>
+
 <script>
-    axios.get("")
+    axios.get("api/Pizzas")
+        .then(function(response){
+            console.log(response.data);
+            response.data.forEach(function(pizza) {
+                console.log(pizza.nome);
+                document.getElementById("container").innerHTML += 
+                    `<div class="card">
+                        <h2>${pizza.nome}</h2>
+                        <p>${pizza.descrizione}</p>
+                        <img src="${pizza.immagine}" alt="${pizza.nome}"
+                        <h4>${pizza.prezzo}€</h4>
+                        <p>${pizza.category}</p>
+                    </div>`;  
+            })
+        })
 </script>
