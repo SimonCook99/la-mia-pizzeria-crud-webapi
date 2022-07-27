@@ -1,5 +1,9 @@
 ﻿<h1>Chiamata API delle pizze</h1>
 
+<div class="search">
+    <input id="search" type="text" placeholder="Cerca una specifica pizza qui" onkeyup="cerca()"/>
+</div>
+
 <div id="container">
 
 </div>
@@ -33,4 +37,49 @@
                 }
             })
         })
+    function cerca() {
+
+
+        document.getElementById("search").addEventListener("keyup", function(){
+
+            let search = document.getElementById("search").value;
+            FiltraPizze(search);
+        })
+    }
+
+    function FiltraPizze(search){
+        
+        console.log("La ricerca è: " + search);
+        document.getElementById("container").innerHTML = "";
+
+        axios.get("api/Pizzas", {
+            params: {
+                search,
+            }
+        }).then((response) => {
+            console.log(response.data);
+            response.data.forEach(function(pizza) {
+
+                if(pizza.category != null){
+
+                    document.getElementById("container").innerHTML += 
+                        `<div class="card">
+                            <h2>${pizza.nome}</h2>
+                            <p>${pizza.descrizione}</p>
+                            <img src="${pizza.immagine}" alt="${pizza.nome}"
+                            <h4>${pizza.prezzo}€</h4>
+                            <p style="color:red;" >${pizza.category.nome}</p>
+                        </div>`;
+                }else{
+                    document.getElementById("container").innerHTML += 
+                        `<div class="card">
+                            <h2>${pizza.nome}</h2>
+                            <p>${pizza.descrizione}</p>
+                            <img src="${pizza.immagine}" alt="${pizza.nome}"
+                            <h4>${pizza.prezzo}€</h4>
+                        </div>`;
+                }
+            })
+        })
+    }
 </script>
