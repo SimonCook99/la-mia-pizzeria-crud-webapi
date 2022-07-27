@@ -25,6 +25,7 @@
                             <img src="${pizza.immagine}" alt="${pizza.nome}"
                             <h4>${pizza.prezzo}€</h4>
                             <p style="color:red;" >${pizza.category.nome}</p>
+                            <a href="Home/Show/${pizza.id}">Mostra dettagli</a>
                         </div>`;
                 }else{
                     document.getElementById("container").innerHTML += 
@@ -33,6 +34,7 @@
                             <p>${pizza.descrizione}</p>
                             <img src="${pizza.immagine}" alt="${pizza.nome}"
                             <h4>${pizza.prezzo}€</h4>
+                            <a href="Home/Show/${pizza.id}">Mostra dettagli</a>
                         </div>`;
                 }
             })
@@ -40,10 +42,14 @@
     function cerca() {
 
 
-        document.getElementById("search").addEventListener("keyup", function(){
+        document.getElementById("search").addEventListener("keyup", function(e){
 
-            let search = document.getElementById("search").value;
-            FiltraPizze(search);
+            //bonus
+            if (e.key == "Enter") {
+                let search = document.getElementById("search").value;
+                FiltraPizze(search);
+
+            }
         })
     }
 
@@ -69,6 +75,7 @@
                             <img src="${pizza.immagine}" alt="${pizza.nome}"
                             <h4>${pizza.prezzo}€</h4>
                             <p style="color:red;" >${pizza.category.nome}</p>
+                            <a href="Home/Show/${pizza.id}">Mostra dettagli</a>
                         </div>`;
                 }else{
                     document.getElementById("container").innerHTML += 
@@ -77,6 +84,7 @@
                             <p>${pizza.descrizione}</p>
                             <img src="${pizza.immagine}" alt="${pizza.nome}"
                             <h4>${pizza.prezzo}€</h4>
+                            <a href="Home/Show/${pizza.id}">Mostra dettagli</a>
                         </div>`;
                 }
             })

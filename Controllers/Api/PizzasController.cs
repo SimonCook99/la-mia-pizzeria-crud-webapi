@@ -11,12 +11,12 @@ namespace la_mia_pizzeria_static.Controllers.Api{
     public class PizzasController : ControllerBase{
 
         [HttpGet]
-        public IActionResult Search(string? search){
+        public IActionResult Get(string? search){
             using (PizzaContext context = new PizzaContext()) {
 
                 IQueryable<Pizza> pizze;
 
-                if (search == null){
+                if (search == null || search == ""){
                     pizze = context.Pizzas.Include(p => p.Category);
                 }
                 else{
@@ -25,6 +25,21 @@ namespace la_mia_pizzeria_static.Controllers.Api{
                 }
                 return Ok(pizze.ToList());
             }
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult Get(int id){
+            using (PizzaContext context = new PizzaContext()){
+                Pizza pizza = context.Pizzas.Where(p => p.Id == id).Include(p => p.Category).FirstOrDefault();
+
+                if (pizza == null){
+                    return NotFound();
+                }
+
+                return Ok(pizza);
+            }
+
+                
         }
     }
 }
