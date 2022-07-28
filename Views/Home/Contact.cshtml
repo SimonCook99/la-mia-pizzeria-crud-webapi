@@ -1,25 +1,25 @@
 ﻿@using la_mia_pizzeria_static.Models.Partial
 
 @{
-    @model PizzaCategories
-    
-
     Layout = "_MenuLayout";
 }
 
 <div class="text-center">
-    
+     
+    <div class="confirm" style="background-color: greenyellow; padding: 15px">
+        <!--Qui ci sarà la conferma del messaggio inviato-->
+    </div>
         
-        <div class="form-group">
-            <label>Inserisci il titolo del messaggio *</label>
-            <input type="text" id="titolo" name="Titolo" class="form-control" placeholder="titolo">
-        </div>
-        <div class="form-group">
-            <label>Inserisci il messaggio che vuoi mandarci</label>
-            <textarea name="Commento" id="commento" class="form-control" rows="3"></textarea>
-        </div>
+    <div class="form-group">
+        <label>Inserisci il titolo del messaggio *</label>
+        <input type="text" id="titolo" name="Titolo" class="form-control" placeholder="titolo">
+    </div>
+    <div class="form-group">
+        <label>Inserisci il messaggio che vuoi mandarci</label>
+        <textarea name="Commento" id="commento" class="form-control" rows="3"></textarea>
+    </div>
 
-        <button class="btn btn-primary" onclick="InviaCommento()">Invia commento</button>
+    <button class="btn btn-primary" onclick="InviaCommento()">Invia commento</button>
     
 </div>
 
@@ -32,13 +32,12 @@
         let titolo = document.getElementById("titolo").value;
         let commento = document.getElementById("commento").value;
 
-        axios.post("api/Messages", {
-            params: {
-                titolo,
-                commento
-            }
+        axios.post("/api/Messages", {
+            titolo,
+            commento
         }).then((response) => {
-            console.log(response);
+            document.querySelector(".confirm").innerHTML +=
+                `<p style="margin:0;">Messaggio inviato correttamente</p>`
         }).catch((error) => {
             console.log(error);
         })
