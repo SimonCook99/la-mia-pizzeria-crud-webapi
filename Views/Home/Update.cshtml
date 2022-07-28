@@ -1,0 +1,74 @@
+﻿@using la_mia_pizzeria_static.Models.Partial
+
+@{
+    @model Pizza
+    
+
+    Layout = "_MenuLayout";
+}
+
+<div class="text-center">
+
+        <div class="form-group">
+            <label>Inserisci il nome della pizza *</label>
+            <input type="text" asp-for="Nome" class="form-control" placeholder="Nome pizza" value="@Model.Nome">
+            <span asp-validation-for="Nome" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label>Inserisci una breve descrizione della pizza</label>
+            <textarea asp-for="Descrizione" class="form-control" rows="3" value="@Model.Descrizione"></textarea>
+            <span asp-validation-for="Descrizione" class="text-danger"></span>
+        </div>
+        <div class="form-check">
+            <label class="form-check-label" style="display: block;">Allega un'immagine di anteprima della tua pizza</label>
+            <input type="file" class="form-control-file" asp-for="Immagine" value="@Model.Immagine">
+            <span asp-validation-for="Immagine" class="text-danger"></span>
+        </div>
+        <div class="form-check">
+            <label class="form-check-label">Inserisci il prezzo della pizza</label>
+            <input asp-for="Prezzo" value="@Model.Prezzo">
+            <span asp-validation-for="Prezzo" class="text-danger"></span>
+        </div>
+
+        <select asp-for="CategoryId">
+            <option value="">Nessuna categoria</option>
+
+            @if(@Model.Category != null){
+            
+           
+                <option value="@Model.Category.Id" selected=@(Model.Category.Id == Model.CategoryId)> @Model.Category.Nome </option>
+                
+            }
+        </select>
+
+        @*<select asp-for="SelectedIngredients"
+                multiple="multiple" size="10"
+                class="form-control mb-2 mr-sm-2 ml-sm-3 leftList"
+                asp-items="@Model.Ingredients">
+        </select>*@
+
+        
+        <button class="btn btn-primary" onclick="ModificaPizza()">Modifica pizza</button>
+</div>
+
+
+<script>
+    function ModificaPizza(){
+        //e.preventDefault();
+
+        let titolo = document.getElementById("titolo").value;
+        let commento = document.getElementById("commento").value;
+
+        axios.post("/api/Pizzas", {
+            @Model.Id
+            @Model
+        }).then((response) => {
+            console.log(response);
+        }).catch((error) => {
+            console.log(error);
+        })
+
+
+    }
+</script>
+
