@@ -4,6 +4,8 @@
     <input id="search" type="text" placeholder="Cerca una specifica pizza qui" onkeyup="cerca()"/>
 </div>
 
+<a asp-controller="Home" asp-action="Contact">Vuoi scriverci un messaggio? Clicca qui</a>
+
 <div id="container">
 
 </div>
@@ -44,7 +46,7 @@
 
         document.getElementById("search").addEventListener("keyup", function(e){
 
-            //bonus
+            //bonus, parte la ricerca solo quando si preme enter
             if (e.key == "Enter") {
                 let search = document.getElementById("search").value;
                 FiltraPizze(search);
@@ -55,6 +57,7 @@
 
     function FiltraPizze(search){
         
+        //piccolo imprevisto, dati ripetuti
         console.log("La ricerca è: " + search);
         document.getElementById("container").innerHTML = "";
 
