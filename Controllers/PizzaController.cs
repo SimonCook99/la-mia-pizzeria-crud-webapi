@@ -1,6 +1,7 @@
 ﻿using la_mia_pizzeria_static.Data;
 using la_mia_pizzeria_static.Models;
 using la_mia_pizzeria_static.Models.Partial;
+using la_mia_pizzeria_static.Models.Repositories;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,13 @@ namespace la_mia_pizzeria_static.Controllers
 {
     public class PizzaController : Controller
     {
+
+        private DbPizzaRepository PizzaRepository;
+
+        public PizzaController(){
+            this.PizzaRepository = new DbPizzaRepository();
+        }
+
         public IActionResult Index(){
             List<Pizza> pizze = new PizzaContext().Pizzas.Include(p => p.Category).Include(ing => ing.Ingredients).ToList();
             ViewData["title"] = "Menù pizze";
