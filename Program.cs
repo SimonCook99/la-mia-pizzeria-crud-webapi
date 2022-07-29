@@ -1,11 +1,19 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using la_mia_pizzeria_static.Data;
+using la_mia_pizzeria_static.Models.Repositories.Interfaces;
+using la_mia_pizzeria_static.Models.Repositories;
+
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("PizzaContextConnection") ?? throw new InvalidOperationException("Connection string 'PizzaContextConnection' not found.");
 
 builder.Services.AddDbContext<PizzaContext>(options =>
     options.UseSqlServer(connectionString));
+
+
+//rigo aggiunto da noi per la gestione della dependenjy injection.
+//Quando passeremo questa interfaccia, passeremo un'istanza di tipo DbPizzaRepository
+builder.Services.AddScoped<IPizzaRepository, DbPizzaRepository>();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<PizzaContext>();

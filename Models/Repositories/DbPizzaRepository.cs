@@ -1,8 +1,9 @@
 ﻿using la_mia_pizzeria_static.Data;
+using la_mia_pizzeria_static.Models.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace la_mia_pizzeria_static.Models.Repositories{
-    public class DbPizzaRepository{
+    public class DbPizzaRepository : IPizzaRepository{
         public void Create(Pizza pizza){
             using (PizzaContext context = new PizzaContext()){
                 pizza.Ingredients = new List<Ingrediente>();

@@ -2,6 +2,7 @@
 using la_mia_pizzeria_static.Models;
 using la_mia_pizzeria_static.Models.Partial;
 using la_mia_pizzeria_static.Models.Repositories;
+using la_mia_pizzeria_static.Models.Repositories.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,20 +12,20 @@ namespace la_mia_pizzeria_static.Controllers
     public class PizzaController : Controller
     {
 
-        private DbPizzaRepository PizzaRepository;
+        private IPizzaRepository PizzaRepository;
 
-        public PizzaController(){
-            this.PizzaRepository = new DbPizzaRepository();
+        public PizzaController(IPizzaRepository _PizzaRepository){ //riferimento a repository nel costruttore
+            this.PizzaRepository = _PizzaRepository;
         }
 
         public IActionResult Index(){
-            List<Pizza> pizze = new PizzaContext().Pizzas.Include(p => p.Category).Include(ing => ing.Ingredients).ToList();
+            List<Pizza> pizze = PizzaRepository.GetList();
             ViewData["title"] = "Menù pizze";
             return View(pizze);
         }
 
         public IActionResult Show(int id){
-            Pizza pizzaResult = new PizzaContext().Pizzas.Where(pizza => pizza.Id == id).Include(p => p.Category).Include(ing => ing.Ingredients).FirstOrDefault();
+            Pizza pizzaResult = PizzaRepository.GetById(id);
             if (pizzaResult == null){
                 return NotFound($"Non esiste nessuna pizza con l'id {id}");
             }
@@ -115,7 +116,7 @@ namespace la_mia_pizzeria_static.Controllers
         public IActionResult Update(int id){
 
             using (PizzaContext context = new PizzaContext()){
-                Pizza pizza = context.Pizzas.Include(p => p.Ingredients).Where(p => p.Id == id).FirstOrDefault();
+                Pizza pizza = PizzaRepository.GetById(id);
                 List<Category> categories = context.Categories.ToList();
                 List<Ingrediente> ingredients = context.Ingredients.ToList();
 
@@ -184,13 +185,13 @@ namespace la_mia_pizzeria_static.Controllers
             using (PizzaContext context = new PizzaContext())
             {
 
-                Pizza pizza = context.Pizzas.Find(id);
+                Pizza pizza = PizzaRepository.GetById(id);
 
                 if (pizza == null){
                     return NotFound();
                 }
 
-                context.Pizzas.Remove(pizza);
+                PizzaRepository.Delete(pizza);
                 context.SaveChanges();
                 return RedirectToAction("Index");
 
