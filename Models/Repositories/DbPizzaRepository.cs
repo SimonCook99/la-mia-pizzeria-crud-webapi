@@ -48,6 +48,17 @@ namespace la_mia_pizzeria_static.Models.Repositories{
                 context.SaveChanges();
             }
         }
+
+        public List<Pizza> GetListByFilter(string search){
+            using (PizzaContext context = new PizzaContext())
+            {
+                IQueryable<Pizza> pizzas = context.Pizzas;
+                if (search != null){
+                    pizzas = pizzas.Where(p => p.Nome.ToLower().Contains(search.ToLower()));
+                }
+                return pizzas.ToList();
+            }
+        }
     }
 }
 

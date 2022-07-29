@@ -11,7 +11,7 @@ builder.Services.AddDbContext<PizzaContext>(options =>
     options.UseSqlServer(connectionString));
 
 
-//rigo aggiunto da noi per la gestione della dependenjy injection.
+//rigo aggiunto da noi per la gestione della dependency injection.
 //Quando passeremo questa interfaccia, passeremo un'istanza di tipo DbPizzaRepository
 builder.Services.AddScoped<IPizzaRepository, DbPizzaRepository>();
 

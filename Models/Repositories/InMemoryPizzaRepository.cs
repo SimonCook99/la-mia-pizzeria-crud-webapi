@@ -61,6 +61,15 @@ namespace la_mia_pizzeria_static.Models.Repositories{
                 InMemoryPizzaRepository.Pizze[indicePizzaDaTrovare] = post;
             }
         }
+
+        public List<Pizza> GetListByFilter(string search){
+            List<Pizza> pizzas = InMemoryPizzaRepository.Pizze;
+            if (search != null)
+            {
+                pizzas = pizzas.Where(p => p.Nome.ToLower().Contains(search.ToLower())).ToList();
+            }
+            return pizzas.ToList();
+        }
     }
 }
 

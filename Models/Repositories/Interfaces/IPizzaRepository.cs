@@ -5,5 +5,8 @@
         public void Create(Pizza post);
         public void Update(Pizza post);
         public void Delete(Pizza post);
+
+
+        public List<Pizza> GetListByFilter(string search); //ricerca per l'APIcontroller
     }
 }

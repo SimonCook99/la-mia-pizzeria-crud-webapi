@@ -1,5 +1,6 @@
 ﻿using la_mia_pizzeria_static.Data;
 using la_mia_pizzeria_static.Models;
+using la_mia_pizzeria_static.Models.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,19 +11,18 @@ namespace la_mia_pizzeria_static.Controllers.Api{
     [ApiController]
     public class PizzasController : ControllerBase{
 
+        private IPizzaRepository PizzaRepository;
+
+        public PizzasController(IPizzaRepository _pizzaRepository){
+            this.PizzaRepository = _pizzaRepository;
+        }
+
+
         [HttpGet] //get per la ricerca (tramite input in frontend)
         public IActionResult Get(string? search){
             using (PizzaContext context = new PizzaContext()) {
 
-                IQueryable<Pizza> pizze;
-
-                if (search == null || search == ""){
-                    pizze = context.Pizzas.Include(p => p.Category);
-                }
-                else{
-                    pizze = context.Pizzas.Where(p => p.Nome.Contains(search)).Include(p => p.Category);
-
-                }
+                List<Pizza> pizze = this.PizzaRepository.GetListByFilter(search);
                 return Ok(pizze.ToList());
             }
         }
@@ -30,11 +30,7 @@ namespace la_mia_pizzeria_static.Controllers.Api{
         [HttpGet("{id}")] //Show della singola pizza
         public IActionResult Get(int id){
             using (PizzaContext context = new PizzaContext()){
-                Pizza pizza = context.Pizzas.Where(p => p.Id == id).Include(p => p.Category).FirstOrDefault();
-
-                if (pizza == null){
-                    return NotFound();
-                }
+                Pizza pizza = this.PizzaRepository.GetById(id);
 
                 return Ok(pizza);
             }
