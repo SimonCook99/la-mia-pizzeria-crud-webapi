@@ -5,6 +5,13 @@ using Microsoft.EntityFrameworkCore;
 namespace la_mia_pizzeria_static.Models.Repositories{
     public class InMemoryPizzaRepository : IPizzaRepository{
         private static List<Pizza> Pizze = new List<Pizza>();
+
+        public InMemoryPizzaRepository(){
+            Pizze.Add(new Pizza("margherita", "pizza bella", "www.nonloso.it", 3.50));
+            Pizze.Add(new Pizza("marinara", "pizza bella", "www.nonloso.it", 6.50));
+            Pizze.Add(new Pizza("quattro stagioni", "pizza bella", "www.nonloso.it", 7.50));
+            Pizze.Add(new Pizza("wrustel", "pizza bella", "www.nonloso.it", 5.30));
+        }
         public void Create(Pizza pizza)
         {
             pizza.Id = Pizze.Count;
